@@ -2,7 +2,7 @@ name: Check JSON Changes
 
 on:
   schedule:
-    - cron: "0 * * * *"  # Ejecuta cada hora
+    - cron: "0 8-17 * * 1-5"  # Ejecuta cada hora
   workflow_dispatch:  # Permite ejecución manual
 
 jobs:
