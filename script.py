@@ -7,7 +7,7 @@ URL = "https://data-api.hawkings.education/api/swagger/swagger.json"
 FILE_PATH = "data.json"
 
 def get_json_from_url(url):
-    response = request.get(url)
+    response = requests.get(url)
     response.raise_for_status()
     return response.json()
 
