@@ -1,0 +1,3764 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Hawkings Education Data API",
+        "version": "1.0.0",
+        "description": "API para la generaci\u00f3n de actividades (audio-resume, diagram, expand, etc.) de la plataforma Hawkings Education. La autenticaci\u00f3n se realiza mediante la cabecera **X-API-KEY**.\n"
+    },
+    "servers": [
+        {
+            "url": "https://data-api.hawkings.education"
+        }
+    ],
+    "security": [
+        {
+            "apiKeyAuth": []
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "apiKeyAuth": {
+                "type": "apiKey",
+                "in": "header",
+                "name": "X-API-KEY"
+            }
+        },
+        "schemas": {
+            "Activity": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "uuid": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "input": {
+                        "type": "object"
+                    },
+                    "content": {
+                        "type": "object"
+                    }
+                }
+            },
+            "ActivityListResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Activity"
+                        }
+                    },
+                    "pages": {
+                        "type": "integer"
+                    },
+                    "page": {
+                        "type": "integer"
+                    },
+                    "offset": {
+                        "type": "integer"
+                    },
+                    "total": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "BaseCourseInput": {
+                "type": "object",
+                "required": [
+                    "course_remote_id",
+                    "course_module_remote_ids"
+                ],
+                "properties": {
+                    "course_remote_id": {
+                        "type": "string"
+                    },
+                    "course_module_remote_ids": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "AudioResumeInput": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/BaseCourseInput"
+                    }
+                ]
+            },
+            "DiagramInput": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/BaseCourseInput"
+                    }
+                ]
+            },
+            "EvaluateInput": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/BaseCourseInput"
+                    }
+                ],
+                "required": [
+                    "question",
+                    "model_answer",
+                    "student_response"
+                ],
+                "properties": {
+                    "question": {
+                        "type": "string"
+                    },
+                    "model_answer": {
+                        "type": "string"
+                    },
+                    "student_response": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ExpandInput": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/BaseCourseInput"
+                    }
+                ],
+                "required": [
+                    "level"
+                ],
+                "properties": {
+                    "level": {
+                        "type": "string",
+                        "enum": [
+                            "basic",
+                            "intermediate",
+                            "advanced"
+                        ]
+                    }
+                }
+            },
+            "ExplainInput": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/BaseCourseInput"
+                    }
+                ]
+            },
+            "FlashcardInput": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/BaseCourseInput"
+                    }
+                ],
+                "required": [
+                    "count"
+                ],
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "QuizInput": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/BaseCourseInput"
+                    }
+                ],
+                "required": [
+                    "count"
+                ],
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "QuizElementOrderInput": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/BaseCourseInput"
+                    }
+                ],
+                "required": [
+                    "count"
+                ],
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "QuizFillBlankInput": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/BaseCourseInput"
+                    }
+                ],
+                "required": [
+                    "count"
+                ],
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "QuizGroupingInput": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/BaseCourseInput"
+                    }
+                ],
+                "required": [
+                    "count"
+                ],
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "QuizMatchingInput": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/BaseCourseInput"
+                    }
+                ],
+                "required": [
+                    "count"
+                ],
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "QuizMixedInput": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/BaseCourseInput"
+                    }
+                ],
+                "required": [
+                    "count"
+                ],
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "QuizOpenEndedInput": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/BaseCourseInput"
+                    }
+                ],
+                "required": [
+                    "count"
+                ],
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "QuizTrueFalseInput": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/BaseCourseInput"
+                    }
+                ],
+                "required": [
+                    "count"
+                ],
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "ShortAnswerInput": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/BaseCourseInput"
+                    }
+                ],
+                "required": [
+                    "count"
+                ],
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "ShortAnswerEvaluateInput": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/BaseCourseInput"
+                    }
+                ],
+                "required": [
+                    "question",
+                    "model_answer",
+                    "student_response"
+                ],
+                "properties": {
+                    "question": {
+                        "type": "string"
+                    },
+                    "model_answer": {
+                        "type": "string"
+                    },
+                    "student_response": {
+                        "type": "string"
+                    }
+                }
+            },
+            "TextResumeInput": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/BaseCourseInput"
+                    }
+                ]
+            },
+            "UnderlineInput": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/BaseCourseInput"
+                    }
+                ]
+            },
+            "ThreadInput": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/BaseCourseInput"
+                    }
+                ],
+                "required": [
+                    "type"
+                ],
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "chat"
+                        ]
+                    }
+                }
+            },
+            "ThreadMessageInput": {
+                "type": "object",
+                "required": [
+                    "message"
+                ],
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Course": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "ai_behaviour": {
+                        "type": "string"
+                    },
+                    "grade_publish_delay": {
+                        "type": "integer"
+                    },
+                    "remote_id": {
+                        "type": "string"
+                    },
+                    "enabled": {
+                        "type": "boolean"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "course_content_processed_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "language": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "code": {
+                                "type": "string"
+                            },
+                            "iso": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "CourseListResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Course"
+                        }
+                    },
+                    "pages": {
+                        "type": "integer"
+                    },
+                    "page": {
+                        "type": "integer"
+                    },
+                    "offset": {
+                        "type": "integer"
+                    },
+                    "total": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "CourseDetail": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "course_sections": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CourseSection"
+                        }
+                    },
+                    "remote_id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "ai_behaviour": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "grade_publish_delay": {
+                        "type": "integer"
+                    },
+                    "enabled": {
+                        "type": "boolean"
+                    },
+                    "language": {
+                        "type": "object",
+                        "properties": {
+                            "code": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "learning_platform": {
+                        "type": "object",
+                        "properties": {
+                            "uuid": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "CourseSection": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "course_modules": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CourseModule"
+                        }
+                    },
+                    "remote_id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "order": {
+                        "type": "integer"
+                    },
+                    "remote_updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "CourseModule": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "course_contents": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CourseContent"
+                        }
+                    },
+                    "remote_id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "url": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "order": {
+                        "type": "integer"
+                    },
+                    "remote_updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "CourseContent": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "url": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "mime": {
+                        "type": "string"
+                    },
+                    "remote_id": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "remote_updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "course": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "remote_id": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "course_module": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "order": {
+                                "type": "integer"
+                            },
+                            "remote_id": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "course_section": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "order": {
+                                "type": "integer"
+                            },
+                            "remote_id": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "file": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "type": {
+                                "type": "string"
+                            },
+                            "mime": {
+                                "type": "string"
+                            },
+                            "size": {
+                                "type": "integer"
+                            },
+                            "error": {
+                                "type": "boolean"
+                            },
+                            "error_type": {
+                                "type": "string",
+                                "nullable": true
+                            },
+                            "created_at": {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "updated_at": {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "remote_id": {
+                                "type": "string"
+                            },
+                            "contents": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "StudentInput": {
+                "type": "object",
+                "properties": {
+                    "remote_id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "surname": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Student": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "remote_id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "surname": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    }
+                }
+            },
+            "StudentListResponse": {
+                "type": "object",
+                "properties": {
+                    "students": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Student"
+                        }
+                    }
+                }
+            },
+            "Language": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "code": {
+                        "type": "string"
+                    },
+                    "iso": {
+                        "type": "string"
+                    },
+                    "rtl": {
+                        "type": "boolean"
+                    }
+                }
+            }
+        },
+        "responses": {
+            "UnauthorizedError": {
+                "description": "Error de autenticaci\u00f3n (Sin API KEY, API KEY no existente, Usuario no activo, etc.)",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer"
+                                },
+                                "status": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                },
+                                "details": {
+                                    "type": "object",
+                                    "nullable": true
+                                }
+                            }
+                        },
+                        "example": {
+                            "code": 401,
+                            "status": "error",
+                            "message": "Authentication failed: missing or invalid API KEY.",
+                            "details": null
+                        }
+                    }
+                }
+            },
+            "NotFoundError": {
+                "description": "Contenido no existente",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer"
+                                },
+                                "status": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                },
+                                "details": {
+                                    "type": "object",
+                                    "nullable": true
+                                }
+                            }
+                        },
+                        "example": {
+                            "code": 404,
+                            "status": "error",
+                            "message": "The requested activity is no longer available",
+                            "details": null
+                        }
+                    }
+                }
+            },
+            "ValidationError": {
+                "description": "Error en la validaci\u00f3n de los datos",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer"
+                                },
+                                "status": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                },
+                                "details": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "key": {
+                                                "type": "string"
+                                            },
+                                            "messages": {
+                                                "type": "object"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "example": {
+                            "code": 422,
+                            "status": "validator",
+                            "message": "The count field must be an integer.",
+                            "details": [
+                                {
+                                    "key": "count",
+                                    "messages": {
+                                        "integer": "The count field must be an integer."
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "paths": {
+        "/activity": {
+            "get": {
+                "summary": "Listar actividades",
+                "description": "Obtiene una lista de actividades. Se pueden filtrar opcionalmente por 'type' y 'course_remote_id'.",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "type",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Tipo de actividad (opcional)"
+                    },
+                    {
+                        "in": "query",
+                        "name": "course_remote_id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Identificador remoto del curso (opcional)"
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "integer",
+                            "default": 100
+                        },
+                        "description": "N\u00famero m\u00e1ximo de registros a devolver (por defecto 100)"
+                    },
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "N\u00famero de p\u00e1gina para la paginaci\u00f3n"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de actividades",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ActivityListResponse"
+                                },
+                                "example": {
+                                    "data": [
+                                        {
+                                            "id": 10,
+                                            "uuid": "6777c9c7783d490591e5d904",
+                                            "type": "flashcard",
+                                            "title": "Flashcards for Advertising 101",
+                                            "description": "Review key concepts through 4 flashcards",
+                                            "created_at": "2025-01-03T11:28:08Z",
+                                            "updated_at": "2025-01-03T11:28:08Z"
+                                        },
+                                        {
+                                            "id": 7,
+                                            "uuid": "6777c829783d49161a7e3799",
+                                            "type": "short_answer_evaluate",
+                                            "title": "Short Answer Evaluation for Advertising 101",
+                                            "description": "Evaluate the accuracy and relevance of a short answer given by the student",
+                                            "created_at": "2025-01-03T11:21:14Z",
+                                            "updated_at": "2025-01-03T11:21:14Z"
+                                        }
+                                    ],
+                                    "pages": 1,
+                                    "page": 1,
+                                    "offset": 100,
+                                    "total": 10
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFoundError"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKeyAuth": []
+                    }
+                ]
+            }
+        },
+        "/activity/{uuid}": {
+            "get": {
+                "summary": "Obtener actividad por UUID",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "uuid",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "UUID de la actividad"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalles de la actividad",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Activity"
+                                },
+                                "example": {
+                                    "id": 20,
+                                    "uuid": "677d152d783d49162290542e",
+                                    "type": "text_resume",
+                                    "title": "Text Summary for Advertising 101",
+                                    "description": "Read a text and draft a concise summary with the main ideas",
+                                    "created_at": "2025-01-07T11:51:09Z",
+                                    "updated_at": "2025-01-07T11:51:09Z",
+                                    "input": {
+                                        "course_remote_id": "834",
+                                        "course_module_remote_ids": [
+                                            "14275",
+                                            "14276",
+                                            "14277"
+                                        ]
+                                    },
+                                    "content": {
+                                        "summary": "La evoluci\u00f3n de la comunicaci\u00f3n persuasiva ... (texto recortado)",
+                                        "conclusions": [
+                                            "The evolution of advertising has progressed from oral announcements to written and visual forms, reflecting societal and technological advancements.",
+                                            "Early advertising methods, including graffiti and town criers, laid the foundation for the modern advertising we see today, with many techniques having roots in ancient practices.",
+                                            "The printing press was a pivotal invention that enabled mass dissemination of messages."
+                                        ],
+                                        "main_points": [
+                                            {
+                                                "title": "The Printing Press Revolution",
+                                                "details": "Johannes Gutenberg's invention of the printing press in the fifteenth century revolutionized communication, allowing for the exponential multiplication of messages and the creation of almanacs with advertising elements."
+                                            },
+                                            {
+                                                "title": "Early Forms of Written Advertising",
+                                                "details": "In ancient Greece, propaganda media such as axons and kyrbos were used, while ancient Rome employed 'alba' and 'libelli' for official and commercial communication. Graffiti also served as a medium for protest and commercial messaging."
+                                            },
+                                            {
+                                                "title": "Evolution of Visual Advertising",
+                                                "details": "Posterism gained strength as a method of message dissemination, promoting shows or military enlistment. Posters evolved to incorporate new typographies and text alignment. Labelling emerged as a method to identify and differentiate products."
+                                            },
+                                            {
+                                                "title": "Oral Advertising in Ancient Times",
+                                                "details": "Persuasive communication was initially oral, with merchants loudly advertising products. Town criers and heralds were early examples."
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFoundError"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKeyAuth": []
+                    }
+                ]
+            }
+        },
+        "/activity/audio-resume": {
+            "post": {
+                "summary": "Generar actividad audio-resume",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AudioResumeInput"
+                            },
+                            "example": {
+                                "course_remote_id": "834",
+                                "course_module_remote_ids": [
+                                    "14275",
+                                    "14276",
+                                    "14277"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Respuesta de actividad audio-resume",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Activity"
+                                },
+                                "example": {
+                                    "id": 12,
+                                    "uuid": "677d0e4e783d4916212803ec",
+                                    "type": "audio_resume",
+                                    "title": "Audio Summary for Advertising 101",
+                                    "description": "Listen to an audio clip and produce a concise summary of its content",
+                                    "created_at": "2025-01-07T11:21:51Z",
+                                    "updated_at": "2025-01-07T11:21:51Z",
+                                    "input": {
+                                        "course_remote_id": "834",
+                                        "course_module_remote_ids": [
+                                            "14275",
+                                            "14276",
+                                            "14277"
+                                        ]
+                                    },
+                                    "content": {
+                                        "summary": "This text outlines the historical development of advertising ... (texto recortado)",
+                                        "audio_base64": "//OExAAAAAAAAA... (audio recortado)"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFoundError"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKeyAuth": []
+                    }
+                ]
+            }
+        },
+        "/activity/diagram": {
+            "post": {
+                "summary": "Generar actividad diagram",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/DiagramInput"
+                            },
+                            "example": {
+                                "course_remote_id": "834",
+                                "course_module_remote_ids": [
+                                    "14275",
+                                    "14276",
+                                    "14277"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Respuesta de actividad diagram",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Activity"
+                                },
+                                "example": {
+                                    "id": 13,
+                                    "uuid": "677d1431783d49161a879e19",
+                                    "type": "diagram",
+                                    "title": "Evolution of Early Advertising",
+                                    "description": "A diagram showing the evolution of early advertising methods and technologies.",
+                                    "created_at": "2025-01-07T11:46:58Z",
+                                    "updated_at": "2025-01-07T11:46:58Z",
+                                    "input": {
+                                        "course_remote_id": "834",
+                                        "course_module_remote_ids": [
+                                            "14275",
+                                            "14276",
+                                            "14277"
+                                        ]
+                                    },
+                                    "content": {
+                                        "title": "Evolution of Early Advertising",
+                                        "description": "A diagram showing the evolution of early advertising methods and technologies.",
+                                        "image_base64": "iVBORw0KGgoAAAANSUhEUgAABg4AAAH+CAYAAABEGPU/AAAAAXNSR0IArs4c6QAAIABJREFUeJzs3Xl8VNX9//H3uZOEhED...",
+                                        "mermaid_code": "graph TD\n    A[\"Early Communication\"] --> B(\"Oral Communication\");\n    A --> C(\"Written Communication\");\n    C --> D[\"Ancient Greece (Axons, Kyrbos)\"];\n    C --> E[\"Ancient Rome (Alba, Libelli)\"];\n    C --> F[\"Graffiti\"];\n    C --> G[\"Printing Press\"];\n    G --> H(\"Almanacs\");\n    G --> I(\"Newspapers\");\n    G --> J(\"Posters\");\n    J --> K(\"Typographies, Layouts\");\n    B --> L[\"Town Criers\"];\n    B --> M[\"Heralds/K\u00e9rux\"];\n    B --> N[\"Charlatans\"];\n"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFoundError"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKeyAuth": []
+                    }
+                ]
+            }
+        },
+        "/activity/expand": {
+            "post": {
+                "summary": "Generar actividad expand",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ExpandInput"
+                            },
+                            "example": {
+                                "level": "intermediate",
+                                "course_remote_id": "834",
+                                "course_module_remote_ids": [
+                                    "14275",
+                                    "14276",
+                                    "14277"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Respuesta de actividad expand",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Activity"
+                                },
+                                "example": {
+                                    "id": 14,
+                                    "uuid": "677d1476783d497f18b98bbf",
+                                    "type": "expand",
+                                    "title": "Content Expansion for Advertising 101",
+                                    "description": "Expand or detail the provided information for better understanding",
+                                    "created_at": "2025-01-07T11:48:06Z",
+                                    "updated_at": "2025-01-07T11:48:06Z",
+                                    "input": {
+                                        "level": "intermediate",
+                                        "course_remote_id": "834",
+                                        "course_module_remote_ids": [
+                                            "14275",
+                                            "14276",
+                                            "14277"
+                                        ]
+                                    },
+                                    "content": {
+                                        "expansion": {
+                                            "context": {
+                                                "historical": "The development of advertising ... (texto recortado)",
+                                                "theoretical": "This content touches on the evolution of communication ... (texto recortado)"
+                                            },
+                                            "connections": {
+                                                "other_fields": [
+                                                    {
+                                                        "field": "Marketing",
+                                                        "connection": "The history of advertising is fundamentally intertwined with modern marketing practices."
+                                                    },
+                                                    {
+                                                        "field": "Political Science",
+                                                        "connection": "Early printed materials were used for political campaigns and propaganda."
+                                                    },
+                                                    {
+                                                        "field": "Sociology",
+                                                        "connection": "Advertising influences societal values, consumer behavior, and social trends."
+                                                    },
+                                                    {
+                                                        "field": "History",
+                                                        "connection": "Advertising and its history provide insights into the economic, social, and technological development."
+                                                    }
+                                                ],
+                                                "current_debates": "Ongoing discussions center around the ethical implications of advertising..."
+                                            },
+                                            "perspectives": [
+                                                {
+                                                    "approach": "Technological Determinism",
+                                                    "key_points": "Emphasizes how technology shapes society...",
+                                                    "current_status": "Influential but critiqued..."
+                                                },
+                                                {
+                                                    "approach": "Social Constructivism",
+                                                    "key_points": "Emphasizes the role of social factors...",
+                                                    "current_status": "Widely accepted..."
+                                                },
+                                                {
+                                                    "approach": "Cultural Studies",
+                                                    "key_points": "Examines how cultural meanings influence advertising...",
+                                                    "current_status": "Increasingly popular..."
+                                                }
+                                            ],
+                                            "advanced_aspects": "Further study could look at psychological effects...",
+                                            "related_concepts": [
+                                                {
+                                                    "concept": "Mass Communication",
+                                                    "relevance": "Explains the transition enabled by the printing press.",
+                                                    "explanation": "The printing press allowed a single message to reach a large audience."
+                                                },
+                                                {
+                                                    "concept": "Propaganda",
+                                                    "relevance": "Highlights the overlap with advertising.",
+                                                    "explanation": "Propaganda and advertising share techniques, though with different aims."
+                                                },
+                                                {
+                                                    "concept": "Visual Communication",
+                                                    "relevance": "Analyzes how visual elements enhance messages.",
+                                                    "explanation": "Posters and labels are clear examples."
+                                                },
+                                                {
+                                                    "concept": "Branding",
+                                                    "relevance": "Marks the early steps towards product identity.",
+                                                    "explanation": "Labels and signs led to the era of brands."
+                                                },
+                                                {
+                                                    "concept": "Oral Tradition",
+                                                    "relevance": "Foundations in rhetoric and public speaking.",
+                                                    "explanation": "Town criers and heralds are early examples."
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFoundError"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKeyAuth": []
+                    }
+                ]
+            }
+        },
+        "/activity/explain": {
+            "post": {
+                "summary": "Generar actividad explain",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ExplainInput"
+                            },
+                            "example": {
+                                "course_remote_id": "834",
+                                "course_module_remote_ids": [
+                                    "14275",
+                                    "14276",
+                                    "14277"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Respuesta de actividad explain",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Activity"
+                                },
+                                "example": {
+                                    "id": 15,
+                                    "uuid": "677d1497783d49b05713ed55",
+                                    "type": "explain",
+                                    "title": "Detailed Explanation for Advertising 101",
+                                    "description": "Offer a detailed explanation of a concept or text fragment",
+                                    "created_at": "2025-01-07T11:48:40Z",
+                                    "updated_at": "2025-01-07T11:48:40Z",
+                                    "input": {
+                                        "course_remote_id": "834",
+                                        "course_module_remote_ids": [
+                                            "14275",
+                                            "14276",
+                                            "14277"
+                                        ]
+                                    },
+                                    "content": {
+                                        "explanation": {
+                                            "summary": "Advertising evolved from simple spoken announcements ... (texto recortado)",
+                                            "examples": [
+                                                {
+                                                    "scenario": "A town crier shouting about new products in the market.",
+                                                    "relevance": "Shows the earliest form of oral advertising."
+                                                },
+                                                {
+                                                    "scenario": "Graffiti in ancient Rome mentioning brothels.",
+                                                    "relevance": "Demonstrates early informal advertising."
+                                                },
+                                                {
+                                                    "scenario": "Early newspapers using printing presses to announce new products.",
+                                                    "relevance": "Illustrates the mass production enabled by the printing press."
+                                                },
+                                                {
+                                                    "scenario": "Sergeant inviting people to join the army with offers of drinks",
+                                                    "relevance": "Shows the use of persuasive tactics."
+                                                }
+                                            ],
+                                            "core_concept": {
+                                                "main_analogy": {
+                                                    "comparison": "Like how a tiny seed grows into a big tree...",
+                                                    "explanation": "Advertising started basic and became more complex."
+                                                },
+                                                "simple_definition": "Advertising started as simple methods to inform about products..."
+                                            },
+                                            "progressive_structure": {
+                                                "main_idea": "Advertising has a long history that started with oral communication...",
+                                                "relationships": "Oral methods evolved into written and then printed forms.",
+                                                "key_components": [
+                                                    {
+                                                        "component": "Oral Advertising",
+                                                        "explanation": "Earliest form where products were announced loudly."
+                                                    },
+                                                    {
+                                                        "component": "Written Advertising (early)",
+                                                        "explanation": "Started with signs, graffiti, and basic writings."
+                                                    },
+                                                    {
+                                                        "component": "Printed Advertising",
+                                                        "explanation": "The printing press allowed mass production of advertising materials."
+                                                    },
+                                                    {
+                                                        "component": "Persuasion Techniques",
+                                                        "explanation": "Techniques to influence buyer behavior evolved over time."
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFoundError"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKeyAuth": []
+                    }
+                ]
+            }
+        },
+        "/activity/flashcard": {
+            "post": {
+                "summary": "Generar actividad flashcard",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FlashcardInput"
+                            },
+                            "example": {
+                                "count": 3,
+                                "course_remote_id": "834",
+                                "course_module_remote_ids": [
+                                    "14275",
+                                    "14276",
+                                    "14277"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Respuesta de actividad flashcard",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Activity"
+                                },
+                                "example": {
+                                    "id": 16,
+                                    "uuid": "677d14d1783d49162142e51e",
+                                    "type": "flashcard",
+                                    "title": "Flashcards for Advertising 101",
+                                    "description": "Review key concepts through 3 flashcards",
+                                    "created_at": "2025-01-07T11:49:37Z",
+                                    "updated_at": "2025-01-07T11:49:37Z",
+                                    "input": {
+                                        "count": 3,
+                                        "course_remote_id": "834",
+                                        "course_module_remote_ids": [
+                                            "14275",
+                                            "14276",
+                                            "14277"
+                                        ]
+                                    },
+                                    "content": {
+                                        "flashcards": [
+                                            {
+                                                "front": "What invention in the 15th century revolutionized communication and allowed for the mass dissemination of messages?",
+                                                "back": "The printing press, invented by Johannes Gutenberg, revolutionized communication by enabling the exponential multiplication of messages.",
+                                                "metadata": {
+                                                    "category": "History of Advertising",
+                                                    "difficulty": "beginner",
+                                                    "prerequisites": [],
+                                                    "misconceptions": "Attributing the invention of the printing press to a later date.",
+                                                    "cognitive_level": "knowledge",
+                                                    "learning_strategy": "Use mnemonics to remember key historical figures.",
+                                                    "real_world_application": "The printing press paved the way for modern mass media and advertising."
+                                                }
+                                            },
+                                            {
+                                                "front": "How was commercial information disseminated in ancient times before the printing press, and what are some examples?",
+                                                "back": "Before the printing press, information was spread through oral channels (town criers, merchants) and written forms (axons/kyrbos, alba/libelli, graffiti).",
+                                                "metadata": {
+                                                    "category": "History of Advertising",
+                                                    "difficulty": "intermediate",
+                                                    "prerequisites": [
+                                                        "Basic understanding of ancient civilizations"
+                                                    ],
+                                                    "misconceptions": "Believing advertising is a purely modern phenomenon.",
+                                                    "cognitive_level": "comprehension",
+                                                    "learning_strategy": "Compare and contrast different ancient advertising methods.",
+                                                    "real_world_application": "Recognizing that some methods have persisted over time."
+                                                }
+                                            },
+                                            {
+                                                "front": "Analyze how the use of oral communication for advertising evolved from the town crier to the 'charlatan'.",
+                                                "back": "Initially, town criers announced products, which later evolved to charlatans using persuasive language to entice buyers.",
+                                                "metadata": {
+                                                    "category": "History of Advertising",
+                                                    "difficulty": "intermediate",
+                                                    "prerequisites": [
+                                                        "Understanding the role of town criers"
+                                                    ],
+                                                    "misconceptions": "Thinking advertising was always purely persuasive.",
+                                                    "cognitive_level": "analysis",
+                                                    "learning_strategy": "Consider the techniques used to persuade the audience."
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFoundError"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKeyAuth": []
+                    }
+                ]
+            }
+        },
+        "/activity/quiz": {
+            "post": {
+                "summary": "Generar actividad quiz",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/QuizInput"
+                            },
+                            "example": {
+                                "count": 3,
+                                "course_remote_id": "834",
+                                "course_module_remote_ids": [
+                                    "14275",
+                                    "14276",
+                                    "14277"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Respuesta de actividad quiz",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Activity"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFoundError"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKeyAuth": []
+                    }
+                ]
+            }
+        },
+        "/activity/quiz-element-order": {
+            "post": {
+                "summary": "Generar actividad quiz element order",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/QuizElementOrderInput"
+                            },
+                            "example": {
+                                "count": 3,
+                                "course_remote_id": "834",
+                                "course_module_remote_ids": [
+                                    "14275",
+                                    "14276",
+                                    "14277"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Respuesta de actividad quiz element order",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Activity"
+                                },
+                                "example": {
+                                    "id": 25,
+                                    "uuid": "677d1557783d497f18a5f7b1",
+                                    "type": "quiz_element_order",
+                                    "title": "Element Order Quiz for Advertising 101",
+                                    "description": "Arrange elements in the correct sequence",
+                                    "created_at": "2025-01-07T11:51:51Z",
+                                    "updated_at": "2025-01-07T11:51:51Z",
+                                    "input": {
+                                        "count": 3,
+                                        "course_remote_id": "834",
+                                        "course_module_remote_ids": [
+                                            "14275",
+                                            "14276",
+                                            "14277"
+                                        ]
+                                    },
+                                    "content": {
+                                        "questions": [
+                                            {
+                                                "instruction": "Arrange these items in the correct order",
+                                                "elements": [
+                                                    "Item 1",
+                                                    "Item 2",
+                                                    "Item 3",
+                                                    "Item 4"
+                                                ],
+                                                "correct_order": [
+                                                    2,
+                                                    0,
+                                                    3,
+                                                    1
+                                                ],
+                                                "explanation": "Brief explanation of why this order is correct"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFoundError"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKeyAuth": []
+                    }
+                ]
+            }
+        },
+        "/activity/quiz-fill-blank": {
+            "post": {
+                "summary": "Generar actividad quiz fill blank",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/QuizFillBlankInput"
+                            },
+                            "example": {
+                                "count": 3,
+                                "course_remote_id": "834",
+                                "course_module_remote_ids": [
+                                    "14275",
+                                    "14276",
+                                    "14277"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Respuesta de actividad quiz fill blank",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Activity"
+                                },
+                                "example": {
+                                    "id": 26,
+                                    "uuid": "677d1557783d497f18a5f7b2",
+                                    "type": "quiz_fill_blank",
+                                    "title": "Fill in the Blank Quiz for Advertising 101",
+                                    "description": "Complete the sentences with the correct words",
+                                    "created_at": "2025-01-07T11:51:51Z",
+                                    "updated_at": "2025-01-07T11:51:51Z",
+                                    "input": {
+                                        "count": 3,
+                                        "course_remote_id": "834",
+                                        "course_module_remote_ids": [
+                                            "14275",
+                                            "14276",
+                                            "14277"
+                                        ]
+                                    },
+                                    "content": {
+                                        "exercise": [
+                                            {
+                                                "sentence": "Text with ___ placeholders ___ to fill.",
+                                                "answers": [
+                                                    "Correct word 1",
+                                                    "Correct word 2"
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFoundError"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKeyAuth": []
+                    }
+                ]
+            }
+        },
+        "/activity/quiz-grouping": {
+            "post": {
+                "summary": "Generar actividad quiz grouping",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/QuizGroupingInput"
+                            },
+                            "example": {
+                                "count": 3,
+                                "course_remote_id": "834",
+                                "course_module_remote_ids": [
+                                    "14275",
+                                    "14276",
+                                    "14277"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Respuesta de actividad quiz grouping",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Activity"
+                                },
+                                "example": {
+                                    "id": 27,
+                                    "uuid": "677d1557783d497f18a5f7b3",
+                                    "type": "quiz_grouping",
+                                    "title": "Grouping Quiz for Advertising 101",
+                                    "description": "Group items into their correct categories",
+                                    "created_at": "2025-01-07T11:51:51Z",
+                                    "updated_at": "2025-01-07T11:51:51Z",
+                                    "input": {
+                                        "count": 3,
+                                        "course_remote_id": "834",
+                                        "course_module_remote_ids": [
+                                            "14275",
+                                            "14276",
+                                            "14277"
+                                        ]
+                                    },
+                                    "content": {
+                                        "groups": [
+                                            {
+                                                "category": "Group A",
+                                                "items": [
+                                                    "Item 1",
+                                                    "Item 2"
+                                                ]
+                                            },
+                                            {
+                                                "category": "Group B",
+                                                "items": [
+                                                    "Item 3",
+                                                    "Item 4"
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFoundError"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKeyAuth": []
+                    }
+                ]
+            }
+        },
+        "/activity/quiz-matching": {
+            "post": {
+                "summary": "Generar actividad quiz matching",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/QuizMatchingInput"
+                            },
+                            "example": {
+                                "count": 3,
+                                "course_remote_id": "834",
+                                "course_module_remote_ids": [
+                                    "14275",
+                                    "14276",
+                                    "14277"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Respuesta de actividad quiz matching",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Activity"
+                                },
+                                "example": {
+                                    "id": 28,
+                                    "uuid": "677d1557783d497f18a5f7b4",
+                                    "type": "quiz_matching",
+                                    "title": "Matching Quiz for Advertising 101",
+                                    "description": "Match items with their corresponding pairs",
+                                    "created_at": "2025-01-07T11:51:51Z",
+                                    "updated_at": "2025-01-07T11:51:51Z",
+                                    "input": {
+                                        "count": 3,
+                                        "course_remote_id": "834",
+                                        "course_module_remote_ids": [
+                                            "14275",
+                                            "14276",
+                                            "14277"
+                                        ]
+                                    },
+                                    "content": {
+                                        "pairs": [
+                                            {
+                                                "item": "Item text",
+                                                "match": "Matching answer"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFoundError"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKeyAuth": []
+                    }
+                ]
+            }
+        },
+        "/activity/quiz-mixed": {
+            "post": {
+                "summary": "Generar actividad quiz mixed",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/QuizMixedInput"
+                            },
+                            "example": {
+                                "count": 3,
+                                "course_remote_id": "834",
+                                "course_module_remote_ids": [
+                                    "14275",
+                                    "14276",
+                                    "14277"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Respuesta de actividad quiz mixed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Activity"
+                                },
+                                "example": {
+                                    "id": 395,
+                                    "uuid": "67c055b8ff441912f900e985",
+                                    "type": "quiz_mixed",
+                                    "title": "activity.quiz_mixed.title",
+                                    "description": "activity.quiz_mixed.description",
+                                    "created_at": "2025-02-27 12:08:25",
+                                    "updated_at": "2025-02-27 12:08:25",
+                                    "input": {
+                                        "count": 3,
+                                        "course_remote_id": "834",
+                                        "course_module_remote_ids": [
+                                            "14275",
+                                            "14276",
+                                            "14277"
+                                        ]
+                                    },
+                                    "content": {
+                                        "questions": [
+                                            {
+                                                "format": "options",
+                                                "options": [
+                                                    "Johannes Gutenberg",
+                                                    "Leonardo da Vinci",
+                                                    "Michelangelo",
+                                                    "Nicolaus Copernicus"
+                                                ],
+                                                "question": "Who is credited with the invention of the printing press in the fifteenth century according to the content?",
+                                                "explanation": "Johannes Gutenberg is identified in the text as the inventor who revolutionized communication by creating the printing press.",
+                                                "correct_answer": 0
+                                            },
+                                            {
+                                                "format": "options",
+                                                "options": [
+                                                    "It allowed for exponential dissemination of messages and knowledge.",
+                                                    "It enabled the development of digital media.",
+                                                    "It was used exclusively for religious texts.",
+                                                    "It replaced the need for town criers entirely."
+                                                ],
+                                                "question": "What was a major effect of the printing press mentioned in the content?",
+                                                "explanation": "The text explains that the printing press exponentially increased the spread of messages and knowledge and paved the way for advertising through printed media.",
+                                                "correct_answer": 0
+                                            },
+                                            {
+                                                "format": "open",
+                                                "question": "Scenario: Imagine you're a historian examining the transformation of advertising over centuries. Based on the content, analyze how the shift from oral advertising and ancient signboards to the printed media (like almanacs and posters) influenced modern marketing strategies.",
+                                                "explanation": "This answer connects historical methods like oral and early printed advertising to modern practices, demonstrating how foundational elements of message dissemination and visual strategy have evolved to shape contemporary marketing.",
+                                                "correct_answer": "The evolution from oral advertising to printed media was a pivotal development in communication history. Initially, information was spread through oral means and rudimentary signs, which were limited in reach and consistency. The invention of the printing press allowed for mass production of texts and images, ensuring that messages were disseminated more widely and uniformly. This not only democratized access to knowledge but also introduced fundamental advertising strategies such as brand differentiation, visual appeal through typography and layout, and repetition to reinforce messages. These early innovations laid the groundwork for today's multi-channel marketing approaches, where both visual and textual elements remain crucial in brand communication."
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFoundError"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKeyAuth": []
+                    }
+                ]
+            }
+        },
+        "/activity/quiz-open-ended": {
+            "post": {
+                "summary": "Generar actividad quiz open ended",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/QuizOpenEndedInput"
+                            },
+                            "example": {
+                                "count": 3,
+                                "course_remote_id": "834",
+                                "course_module_remote_ids": [
+                                    "14275",
+                                    "14276",
+                                    "14277"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Respuesta de actividad quiz open ended",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Activity"
+                                },
+                                "example": {
+                                    "id": 29,
+                                    "uuid": "677d1557783d497f18a5f7b5",
+                                    "type": "quiz_open_ended",
+                                    "title": "Open Ended Quiz for Advertising 101",
+                                    "description": "Answer questions with detailed responses",
+                                    "created_at": "2025-01-07T11:51:51Z",
+                                    "updated_at": "2025-01-07T11:51:51Z",
+                                    "input": {
+                                        "count": 3,
+                                        "course_remote_id": "834",
+                                        "course_module_remote_ids": [
+                                            "14275",
+                                            "14276",
+                                            "14277"
+                                        ]
+                                    },
+                                    "content": {
+                                        "questions": [
+                                            {
+                                                "scenario": "Short case description",
+                                                "prompt": "Open-ended question asking for a detailed response"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFoundError"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKeyAuth": []
+                    }
+                ]
+            }
+        },
+        "/activity/quiz-true-false": {
+            "post": {
+                "summary": "Generar actividad quiz true false",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/QuizTrueFalseInput"
+                            },
+                            "example": {
+                                "count": 3,
+                                "course_remote_id": "834",
+                                "course_module_remote_ids": [
+                                    "14275",
+                                    "14276",
+                                    "14277"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Respuesta de actividad quiz true false",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Activity"
+                                },
+                                "example": {
+                                    "id": 30,
+                                    "uuid": "677d1557783d497f18a5f7b6",
+                                    "type": "quiz_true_false",
+                                    "title": "True/False Quiz for Advertising 101",
+                                    "description": "Determine whether statements are true or false",
+                                    "created_at": "2025-01-07T11:51:51Z",
+                                    "updated_at": "2025-01-07T11:51:51Z",
+                                    "input": {
+                                        "count": 3,
+                                        "course_remote_id": "834",
+                                        "course_module_remote_ids": [
+                                            "14275",
+                                            "14276",
+                                            "14277"
+                                        ]
+                                    },
+                                    "content": {
+                                        "questions": [
+                                            {
+                                                "question": "Statement text",
+                                                "correct_answer": true,
+                                                "explanation": "Brief explanation of why it is true or false"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFoundError"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKeyAuth": []
+                    }
+                ]
+            }
+        },
+        "/activity/short-answer": {
+            "post": {
+                "summary": "Generar actividad short answer",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ShortAnswerInput"
+                            },
+                            "example": {
+                                "count": 3,
+                                "course_remote_id": "834",
+                                "course_module_remote_ids": [
+                                    "14275",
+                                    "14276",
+                                    "14277"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Respuesta de actividad short answer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Activity"
+                                },
+                                "example": {
+                                    "id": 18,
+                                    "uuid": "677d14fc783d49b0417bd0b2",
+                                    "type": "short_answer",
+                                    "title": "Short Answer for Advertising 101",
+                                    "description": "Respond with a brief explanation or solution to the posed question",
+                                    "created_at": "2025-01-07T11:50:20Z",
+                                    "updated_at": "2025-01-07T11:50:20Z",
+                                    "input": {
+                                        "count": 3,
+                                        "course_remote_id": "834",
+                                        "course_module_remote_ids": [
+                                            "14275",
+                                            "14276",
+                                            "14277"
+                                        ]
+                                    },
+                                    "content": {
+                                        "questions": [
+                                            {
+                                                "question": "Explain how the invention of the printing press revolutionized communication...",
+                                                "key_concepts": [
+                                                    "Printing press",
+                                                    "Mass communication",
+                                                    "Information dissemination",
+                                                    "Advertising methods",
+                                                    "Evolution of communication"
+                                                ],
+                                                "model_answer": "The printing press, credited to Johannes Gutenberg, marked a pivotal moment...",
+                                                "expected_length": "2-3 paragraphs",
+                                                "evaluation_criteria": [
+                                                    "Explain the core function of the printing press.",
+                                                    "Describe how it enabled mass production of advertising."
+                                                ]
+                                            },
+                                            {
+                                                "question": "Compare and contrast the advertising methods used in ancient times with those after the printing press...",
+                                                "key_concepts": [
+                                                    "Ancient advertising methods",
+                                                    "Printing press",
+                                                    "Mass communication",
+                                                    "Limitations of communication",
+                                                    "Advantages of communication"
+                                                ],
+                                                "model_answer": "In ancient times, advertising relied heavily on oral and limited written methods...",
+                                                "expected_length": "2-3 paragraphs",
+                                                "evaluation_criteria": [
+                                                    "Identify and describe at least two advertising methods used in ancient times."
+                                                ]
+                                            },
+                                            {
+                                                "question": "Discuss the role of 'charlatans' and 'town criers' in the development of persuasive communication...",
+                                                "key_concepts": [
+                                                    "Persuasive communication",
+                                                    "Rhetoric",
+                                                    "Town criers",
+                                                    "Charlatans",
+                                                    "Evolution of advertising"
+                                                ],
+                                                "model_answer": "Charlatans and town criers played a crucial role in the early development of persuasive communication...",
+                                                "expected_length": "2-3 paragraphs",
+                                                "evaluation_criteria": [
+                                                    "Describe the role of town criers in disseminating information.",
+                                                    "Explain the persuasive role of 'charlatans'."
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFoundError"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKeyAuth": []
+                    }
+                ]
+            }
+        },
+        "/activity/short-answer/evaluate": {
+            "post": {
+                "summary": "Evaluar actividad short answer",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ShortAnswerEvaluateInput"
+                            },
+                            "example": {
+                                "question": "How did the invention of the printing press revolutionize communication and the development of advertising, and what were some of its initial limitations?",
+                                "model_answer": "The printing press revolutionized communication by enabling the mass production of messages...",
+                                "student_response": "The invention of the printing press made it possible to produce messages in large quantities...",
+                                "course_remote_id": "834",
+                                "course_module_remote_ids": [
+                                    "14275",
+                                    "14276",
+                                    "14277"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Respuesta de evaluaci\u00f3n de short answer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Activity"
+                                },
+                                "example": {
+                                    "id": 19,
+                                    "uuid": "677d1504783d490591677943",
+                                    "type": "short_answer_evaluate",
+                                    "title": "Short Answer Evaluation for Advertising 101",
+                                    "description": "Evaluate the accuracy and relevance of a short answer given by the student",
+                                    "created_at": "2025-01-07T11:50:28Z",
+                                    "updated_at": "2025-01-07T11:50:28Z",
+                                    "input": {
+                                        "question": "How did the invention of the printing press revolutionize communication and the development of advertising, and what were some of its initial limitations?",
+                                        "model_answer": "The printing press revolutionized communication by enabling the mass production of messages...",
+                                        "student_response": "The invention of the printing press made it possible to produce messages in large quantities...",
+                                        "course_remote_id": "834",
+                                        "course_module_remote_ids": [
+                                            "14275",
+                                            "14276",
+                                            "14277"
+                                        ]
+                                    },
+                                    "content": {
+                                        "assessment": {
+                                            "score": "excellent",
+                                            "feedback": "The response accurately and completely addresses the prompt...",
+                                            "suggestions": "No suggestions for improvement are needed.",
+                                            "missing_concepts": []
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFoundError"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKeyAuth": []
+                    }
+                ]
+            }
+        },
+        "/activity/text-resume": {
+            "post": {
+                "summary": "Generar actividad text resume",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TextResumeInput"
+                            },
+                            "example": {
+                                "course_remote_id": "834",
+                                "course_module_remote_ids": [
+                                    "14275",
+                                    "14276",
+                                    "14277"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Respuesta de actividad text resume",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Activity"
+                                },
+                                "example": {
+                                    "id": 20,
+                                    "uuid": "677d152d783d49162290542e",
+                                    "type": "text_resume",
+                                    "title": "Text Summary for Advertising 101",
+                                    "description": "Read a text and draft a concise summary with the main ideas",
+                                    "created_at": "2025-01-07T11:51:09Z",
+                                    "updated_at": "2025-01-07T11:51:09Z",
+                                    "input": {
+                                        "course_remote_id": "834",
+                                        "course_module_remote_ids": [
+                                            "14275",
+                                            "14276",
+                                            "14277"
+                                        ]
+                                    },
+                                    "content": {
+                                        "summary": "La evoluci\u00f3n de la comunicaci\u00f3n persuasiva y comercial ... (texto recortado)",
+                                        "conclusions": [
+                                            "The evolution of advertising has progressed from oral announcements to written and visual forms, reflecting societal and technological advancements.",
+                                            "Early advertising methods ... have roots in ancient practices.",
+                                            "The printing press was a pivotal invention..."
+                                        ],
+                                        "main_points": [
+                                            {
+                                                "title": "The Printing Press Revolution",
+                                                "details": "Johannes Gutenberg's invention of the printing press in the fifteenth century revolutionized communication..."
+                                            },
+                                            {
+                                                "title": "Early Forms of Written Advertising",
+                                                "details": "In ancient Greece, propaganda media such as axons and kyrbos were used..."
+                                            },
+                                            {
+                                                "title": "Evolution of Visual Advertising",
+                                                "details": "Posterism gained strength as a method of message dissemination..."
+                                            },
+                                            {
+                                                "title": "Oral Advertising in Ancient Times",
+                                                "details": "Persuasive communication was initially oral, with merchants loudly advertising products..."
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFoundError"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKeyAuth": []
+                    }
+                ]
+            }
+        },
+        "/activity/underline": {
+            "post": {
+                "summary": "Generar actividad underline",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UnderlineInput"
+                            },
+                            "example": {
+                                "course_remote_id": "834",
+                                "course_module_remote_ids": [
+                                    "14275",
+                                    "14276",
+                                    "14277"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Respuesta de actividad underline",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Activity"
+                                },
+                                "example": {
+                                    "id": 21,
+                                    "uuid": "677d1548783d49161db9bc1e",
+                                    "type": "underline",
+                                    "title": "Content Underlining for Advertising 101",
+                                    "description": "Identify and underline the most relevant parts of a text",
+                                    "created_at": "2025-01-07T11:51:37Z",
+                                    "updated_at": "2025-01-07T11:51:37Z",
+                                    "input": {
+                                        "course_remote_id": "834",
+                                        "course_module_remote_ids": [
+                                            "14275",
+                                            "14276",
+                                            "14277"
+                                        ]
+                                    },
+                                    "content": {
+                                        "html": "In the fifteenth century a man named <strong>Johannes Gutenberg</strong> invented the <strong>printing press</strong> ... (texto recortado)",
+                                        "summary": "This text explores the evolution of advertising from ancient times to the invention of the printing press...",
+                                        "concepts": [
+                                            {
+                                                "text": "Johannes Gutenberg",
+                                                "importance": "VERY_IMPORTANT",
+                                                "explanation": "Inventor of the printing press, a key moment in communication history."
+                                            },
+                                            {
+                                                "text": "printing press",
+                                                "importance": "VERY_IMPORTANT",
+                                                "explanation": "Revolutionary invention for mass dissemination of information and advertising."
+                                            },
+                                            {
+                                                "text": "dissemination of knowledge",
+                                                "importance": "IMPORTANT",
+                                                "explanation": "Printing enabled spreading learning to a wider audience."
+                                            },
+                                            {
+                                                "text": "Posterism",
+                                                "importance": "IMPORTANT",
+                                                "explanation": "Use of posters as a method of message dissemination and promotion."
+                                            },
+                                            {
+                                                "text": "labelling",
+                                                "importance": "IMPORTANT",
+                                                "explanation": "The use of labels to identify products and differentiate brands."
+                                            },
+                                            {
+                                                "text": "graffiti",
+                                                "importance": "SECONDARY",
+                                                "explanation": "Informal method of communication, both commercial and personal."
+                                            },
+                                            {
+                                                "text": "town criers",
+                                                "importance": "IMPORTANT",
+                                                "explanation": "Oral advertisers who announced products and news."
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFoundError"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKeyAuth": []
+                    }
+                ]
+            }
+        },
+        "/activity/{uuid}/evaluate": {
+            "post": {
+                "summary": "Evaluar actividad",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "uuid",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "UUID de la actividad"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EvaluateInput"
+                            },
+                            "example": {
+                                "question": "How did the invention of the printing press revolutionize communication and the development of advertising, and what were some of its initial limitations?",
+                                "model_answer": "The printing press revolutionized communication by enabling the mass production of messages...",
+                                "student_response": "The invention of the printing press made it possible to produce messages in large quantities...",
+                                "course_remote_id": "834",
+                                "course_module_remote_ids": [
+                                    "14275",
+                                    "14276",
+                                    "14277"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Respuesta de evaluaci\u00f3n",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Activity"
+                                },
+                                "example": {
+                                    "id": 396,
+                                    "uuid": "67cec0abff4419ef8208f91a",
+                                    "type": "quiz",
+                                    "title": "Prueba para Advertising 101",
+                                    "description": "Prueba generada con 3 preguntas",
+                                    "created_at": "2025-03-10 10:36:27",
+                                    "updated_at": "2025-03-10 10:41:35",
+                                    "input": {
+                                        "count": 3,
+                                        "course_id": 834,
+                                        "course_module_ids": [
+                                            14275,
+                                            14276,
+                                            14277
+                                        ]
+                                    },
+                                    "content": {
+                                        "questions": [
+                                            {
+                                                "options": [
+                                                    "Printing press",
+                                                    "Lithography machine",
+                                                    "Telegraph",
+                                                    "Woodblock press"
+                                                ],
+                                                "question": "Which invention in the fifteenth century is credited with revolutionizing communication by enabling the mass production of texts, including early forms of advertising?",
+                                                "explanation": "Johannes Gutenberg's invention of the printing press allowed texts to be produced exponentially, paving the way for early advertising and mass communication.",
+                                                "correct_answer": 0
+                                            },
+                                            {
+                                                "options": [
+                                                    "It enabled the mass production of almanacs that included advertising elements for a wider audience.",
+                                                    "It was used exclusively by the Church to spread religious messages, leaving no room for commercial content.",
+                                                    "It focused solely on political propaganda without any impact on commercial product promotion.",
+                                                    "It completely replaced the oral tradition of advertising by eliminating any form of spoken communication."
+                                                ],
+                                                "question": "How did the advent of the printing press contribute to the evolution of advertising in its early days?",
+                                                "explanation": "The printing press allowed for the creation of materials like almanacs that contained advertisements, thus expanding the reach of promotional messages and initiating concepts similar to modern advertising.",
+                                                "correct_answer": 0
+                                            },
+                                            {
+                                                "options": [
+                                                    "Oral announcements by town criers and merchants",
+                                                    "Hand-painted axons and signboards",
+                                                    "Graffiti on public walls",
+                                                    "Repurposed papyrus notices like the alba and libelli"
+                                                ],
+                                                "question": "Which method of communication was primarily used in ancient times for persuasive, commercial advertising before the advent of print media?",
+                                                "explanation": "Before print media became widespread, merchants and town criers used persuasive oral communication to advertise products, relying on compelling speeches and live announcements.",
+                                                "correct_answer": 0
+                                            }
+                                        ]
+                                    },
+                                    "evaluation": [
+                                        {
+                                            "question": "How did the advent of the printing press contribute to the evolution of advertising in its early days?",
+                                            "assessment": {
+                                                "score": "needs_improvement",
+                                                "feedback": "Your response misattributes the use of the printing press to exclusively religious messages, missing its role in enabling the mass production of advertising content such as almanacs with commercial messages.",
+                                                "suggestions": "Review how the printing press enabled broader commercial communication beyond its initial religious use.",
+                                                "missing_concepts": [
+                                                    "mass production of almanacs",
+                                                    "advertising elements reaching a wider audience"
+                                                ]
+                                            },
+                                            "created_at": "2025-03-10 10:41:35",
+                                            "model_answer": "It enabled the mass production of almanacs that included advertising elements for a wider audience.",
+                                            "student_response": "It was used exclusively by the Church to spread religious messages, leaving no room for commercial content."
+                                        },
+                                        {
+                                            "created_at": "2025-03-10 10:42:03",
+                                            "question": "How did the advent of the printing press contribute to the evolution of advertising in its early days?",
+                                            "model_answer": "It enabled the mass production of almanacs that included advertising elements for a wider audience.",
+                                            "student_response": "It was used exclusively by the Church to spread religious messages, leaving no room for commercial content.",
+                                            "assessment": {
+                                                "score": "needs_improvement",
+                                                "feedback": "Your answer incorrectly states that the printing press was used solely for religious purposes, missing the key development of advertising through mass-produced almanacs.",
+                                                "missing_concepts": [
+                                                    "mass production",
+                                                    "almanacs containing advertising elements"
+                                                ],
+                                                "suggestions": "Review how the printing press transitioned from exclusive religious use to generating commercial advertising through printed materials."
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFoundError"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKeyAuth": []
+                    }
+                ]
+            }
+        },
+        "/activity/thread": {
+            "post": {
+                "summary": "Generar actividad chat (thread interactivo)",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ThreadInput"
+                            },
+                            "example": {
+                                "type": "chat",
+                                "course_remote_id": "834",
+                                "course_module_remote_ids": [
+                                    "14275",
+                                    "14276",
+                                    "14277"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Respuesta de actividad chat (thread)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Activity"
+                                },
+                                "example": {
+                                    "id": 22,
+                                    "uuid": "677d1557783d497f18a5f7a4",
+                                    "type": "chat",
+                                    "title": "Interactive Chat for Advertising 101",
+                                    "description": "Interact via chat to resolve doubts or delve deeper into the content",
+                                    "created_at": "2025-01-07T11:51:51Z",
+                                    "updated_at": "2025-01-07T11:51:51Z",
+                                    "input": {
+                                        "type": "chat",
+                                        "course_remote_id": "834",
+                                        "course_module_remote_ids": [
+                                            "14275",
+                                            "14276",
+                                            "14277"
+                                        ]
+                                    },
+                                    "content": []
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFoundError"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKeyAuth": []
+                    }
+                ]
+            }
+        },
+        "/activity/{uuid}/thread/message": {
+            "post": {
+                "summary": "Enviar mensaje a un thread de chat",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "uuid",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "UUID de la actividad"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ThreadMessageInput"
+                            },
+                            "example": {
+                                "message": "Hola, c\u00f3mo est\u00e1s?"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Respuesta en stream (mensaje de chat)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "example": "Bien, gracias"
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFoundError"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKeyAuth": []
+                    }
+                ]
+            }
+        },
+        "/course": {
+            "get": {
+                "summary": "Listar cursos",
+                "description": "Obtiene una lista de cursos. En la consulta se debe enviar el par\u00e1metro `course_content_processed_at` (boolean). Los par\u00e1metros `limit` (por defecto 100) y `page` son opcionales para paginaci\u00f3n.\n",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "course_content_processed_at",
+                        "required": true,
+                        "schema": {
+                            "type": "boolean"
+                        },
+                        "description": "Indica si se requiere que el contenido del curso est\u00e9 procesado."
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "integer",
+                            "default": 100
+                        },
+                        "description": "N\u00famero m\u00e1ximo de registros a devolver (por defecto 100)."
+                    },
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "N\u00famero de p\u00e1gina para la paginaci\u00f3n."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de cursos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CourseListResponse"
+                                },
+                                "example": {
+                                    "data": [
+                                        {
+                                            "id": 834,
+                                            "name": "Advertising 101",
+                                            "ai_behaviour": "human_validation_required",
+                                            "grade_publish_delay": 36,
+                                            "remote_id": "10",
+                                            "enabled": true,
+                                            "created_at": "2024-11-13T17:39:17Z",
+                                            "updated_at": "2024-12-03T11:09:12Z",
+                                            "course_content_processed_at": "2024-12-03T11:09:12Z",
+                                            "language": {
+                                                "id": 1,
+                                                "name": "English",
+                                                "code": "en",
+                                                "iso": "en_EN"
+                                            }
+                                        }
+                                    ],
+                                    "pages": 1,
+                                    "page": 1,
+                                    "offset": 100,
+                                    "total": 44
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Crear curso",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "remote_id": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "ai_behaviour": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "nullable": true
+                                    },
+                                    "grade_publish_delay": {
+                                        "type": "integer"
+                                    },
+                                    "enabled": {
+                                        "type": "boolean"
+                                    },
+                                    "language_id": {
+                                        "type": "integer"
+                                    },
+                                    "learning_platform_id": {
+                                        "type": "integer"
+                                    }
+                                }
+                            },
+                            "example": {
+                                "remote_id": "1111",
+                                "name": "Curso de Prueba creado por API",
+                                "ai_behaviour": "human_validation_required",
+                                "description": "Curso de Prueba creado por API Descripci\u00f3n",
+                                "grade_publish_delay": 36,
+                                "enabled": true,
+                                "language_id": 2,
+                                "learning_platform_id": 10
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Curso creado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Course"
+                                },
+                                "example": {
+                                    "id": 834,
+                                    "name": "Advertising 101",
+                                    "ai_behaviour": "human_validation_required",
+                                    "grade_publish_delay": 36,
+                                    "remote_id": "10",
+                                    "enabled": true,
+                                    "created_at": "2024-11-13T17:39:17Z",
+                                    "updated_at": "2024-12-03T11:09:12Z",
+                                    "course_content_processed_at": "2024-12-03T11:09:12Z",
+                                    "language": {
+                                        "id": 1,
+                                        "name": "English",
+                                        "code": "en",
+                                        "iso": "en_EN"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    }
+                }
+            }
+        },
+        "/course/{remote_id}": {
+            "get": {
+                "summary": "Obtener detalle de un curso",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "remote_id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID Remoto del curso"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalle del curso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CourseDetail"
+                                },
+                                "example": {
+                                    "id": 1018,
+                                    "course_sections": [
+                                        {
+                                            "id": 4928,
+                                            "course_modules": [
+                                                {
+                                                    "id": 34035,
+                                                    "course_contents": [
+                                                        {
+                                                            "id": 35837,
+                                                            "remote_id": "HTM99R355",
+                                                            "name": "V\u00eddeo Presentaci\u00f3n",
+                                                            "mime": "text/html",
+                                                            "content": "Las enfermedades transmitidas por alimentos (ETAs) ... ",
+                                                            "remote_updated_at": "2024-06-07T00:00:00Z",
+                                                            "url": null
+                                                        }
+                                                    ]
+                                                }
+                                            ],
+                                            "remote_id": "UDI153DFR",
+                                            "name": "V\u00eddeo Lecciones",
+                                            "order": 1,
+                                            "remote_updated_at": "2024-06-07T00:00:00Z"
+                                        },
+                                        {
+                                            "id": 4929,
+                                            "course_modules": [
+                                                {
+                                                    "id": 34039,
+                                                    "course_contents": [
+                                                        {
+                                                            "id": 35841,
+                                                            "remote_id": "EVA086GQJ",
+                                                            "name": "Autoevaluaci\u00f3n",
+                                                            "mime": "text/html",
+                                                            "content": "\u00bfCu\u00e1l de las siguientes opciones describe mejor...",
+                                                            "remote_updated_at": "2024-06-07T00:00:00Z",
+                                                            "url": null
+                                                        }
+                                                    ]
+                                                }
+                                            ],
+                                            "remote_id": "UDI153DFQ",
+                                            "name": "Recursos Educativos",
+                                            "order": 2,
+                                            "remote_updated_at": "2024-06-07T00:00:00Z"
+                                        }
+                                    ],
+                                    "remote_id": "MOD024L9B",
+                                    "name": "Seguridad alimentaria en el hogar",
+                                    "ai_behaviour": "full_auto",
+                                    "description": null,
+                                    "grade_publish_delay": 36,
+                                    "enabled": true,
+                                    "language": {
+                                        "code": "es"
+                                    },
+                                    "learning_platform": {
+                                        "uuid": "673b3946783d49dd0342af1e"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    }
+                }
+            },
+            "patch": {
+                "summary": "Actualizar parcialmente un curso",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "remote_id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID Remoto del curso a actualizar"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "remote_id": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "ai_behaviour": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "nullable": true
+                                    },
+                                    "grade_publish_delay": {
+                                        "type": "integer"
+                                    },
+                                    "enabled": {
+                                        "type": "boolean"
+                                    },
+                                    "language_id": {
+                                        "type": "integer"
+                                    },
+                                    "learning_platform_id": {
+                                        "type": "integer"
+                                    }
+                                }
+                            },
+                            "example": {
+                                "remote_id": "1111",
+                                "name": "Advertising 101",
+                                "ai_behaviour": "human_validation_required",
+                                "description": "Curso de Prueba creado por API Descripci\u00f3n",
+                                "grade_publish_delay": 36,
+                                "enabled": true,
+                                "language_id": 2,
+                                "learning_platform_id": 10
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Curso actualizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Course"
+                                },
+                                "example": {
+                                    "id": 834,
+                                    "name": "Advertising 101",
+                                    "ai_behaviour": "human_validation_required",
+                                    "grade_publish_delay": 36,
+                                    "remote_id": "10",
+                                    "enabled": true,
+                                    "created_at": "2024-11-13T17:39:17Z",
+                                    "updated_at": "2024-12-03T11:09:12Z",
+                                    "course_content_processed_at": "2024-12-03T11:09:12Z",
+                                    "language": {
+                                        "id": 1,
+                                        "name": "English",
+                                        "code": "en",
+                                        "iso": "en_EN"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    }
+                }
+            }
+        },
+        "/course/bulk": {
+            "post": {
+                "summary": "Crear/actualizar curso en bloque",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "remote_id": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "ai_behaviour": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "nullable": true
+                                    },
+                                    "remote_updated_at": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "grade_publish_delay": {
+                                        "type": "integer"
+                                    },
+                                    "enabled": {
+                                        "type": "boolean"
+                                    },
+                                    "language": {
+                                        "type": "object",
+                                        "properties": {
+                                            "code": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "learning_platform": {
+                                        "type": "object",
+                                        "properties": {
+                                            "uuid": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "course_sections": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "remote_id": {
+                                                    "type": "string"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "remote_updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "order": {
+                                                    "type": "integer"
+                                                },
+                                                "course_modules": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "remote_id": {
+                                                                "type": "string"
+                                                            },
+                                                            "name": {
+                                                                "type": "string"
+                                                            },
+                                                            "remote_updated_at": {
+                                                                "type": "string",
+                                                                "format": "date-time"
+                                                            },
+                                                            "order": {
+                                                                "type": "integer"
+                                                            },
+                                                            "url": {
+                                                                "type": "string"
+                                                            },
+                                                            "course_contents": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "remote_id": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "mime": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "name": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "remote_updated_at": {
+                                                                            "type": "string",
+                                                                            "format": "date-time"
+                                                                        },
+                                                                        "url": {
+                                                                            "type": "string",
+                                                                            "nullable": true
+                                                                        },
+                                                                        "content": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "example": {
+                                "remote_id": "MOD024L9B",
+                                "name": "Seguridad alimentaria en el hogar",
+                                "ai_behaviour": "full_auto",
+                                "description": null,
+                                "remote_updated_at": "2024-06-07T00:00:00Z",
+                                "grade_publish_delay": 36,
+                                "enabled": true,
+                                "language": {
+                                    "code": "es"
+                                },
+                                "learning_platform": {
+                                    "uuid": "673b3946783d49dd0342af1e"
+                                },
+                                "course_sections": [
+                                    {
+                                        "remote_id": "UDI153DFR",
+                                        "name": "V\u00eddeo Lecciones",
+                                        "remote_updated_at": "2024-06-07T00:00:00Z",
+                                        "order": 1,
+                                        "course_modules": [
+                                            {
+                                                "remote_id": "HTM99R358",
+                                                "name": "V\u00eddeo",
+                                                "remote_updated_at": "2024-06-07T00:00:00Z",
+                                                "order": 4,
+                                                "url": "https://www.educalms.com/HTM99R358",
+                                                "course_contents": [
+                                                    {
+                                                        "remote_id": "VID020861",
+                                                        "mime": "video/mp4",
+                                                        "name": "Anisakis: Prevenci\u00f3n y control",
+                                                        "remote_updated_at": "2019-07-02T00:00:00Z",
+                                                        "url": "https://www.educalms.com/REPOSITORIO/loadcontent.php?v=VID_VWxCMVZDJTJCRDZEUjFNYmdjclVLclFTQnN0ZldBdGtleDllJTJCNkh5T2xZeXclM0Q="
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "remote_id": "UDI153DFQ",
+                                        "name": "Recursos Educativos",
+                                        "remote_updated_at": "2024-06-07T00:00:00Z",
+                                        "order": 2,
+                                        "course_modules": [
+                                            {
+                                                "remote_id": "EVA086GQJ",
+                                                "name": "Autoevaluaci\u00f3n",
+                                                "remote_updated_at": "2024-06-07T00:00:00Z",
+                                                "order": 1,
+                                                "url": "https://www.educalms.com/EVA086GQJ",
+                                                "course_contents": [
+                                                    {
+                                                        "remote_id": "EVA086GQJ",
+                                                        "name": "Autoevaluaci\u00f3n",
+                                                        "remote_updated_at": "2024-06-07T00:00:00Z",
+                                                        "content": "\u00bfCu\u00e1l de las siguientes opciones describe mejor una toxi-infecci\u00f3n alimentaria?...",
+                                                        "mime": "text/html"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Curso creado/actualizado en bloque",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CourseDetail"
+                                },
+                                "example": {
+                                    "id": 1018,
+                                    "course_sections": [
+                                        {
+                                            "id": 4928,
+                                            "course_modules": [
+                                                {
+                                                    "id": 34035,
+                                                    "course_contents": [
+                                                        {
+                                                            "id": 35837,
+                                                            "remote_id": "HTM99R355",
+                                                            "name": "V\u00eddeo Presentaci\u00f3n",
+                                                            "mime": "text/html",
+                                                            "content": "Las enfermedades transmitidas por alimentos (ETAs) representan un riesgo significativo...",
+                                                            "remote_updated_at": "2024-06-07T00:00:00Z",
+                                                            "url": null
+                                                        }
+                                                    ]
+                                                }
+                                            ],
+                                            "remote_id": "UDI153DFR",
+                                            "name": "V\u00eddeo Lecciones",
+                                            "order": 1,
+                                            "remote_updated_at": "2024-06-07T00:00:00Z"
+                                        },
+                                        {
+                                            "id": 4929,
+                                            "course_modules": [
+                                                {
+                                                    "id": 34039,
+                                                    "course_contents": [
+                                                        {
+                                                            "id": 35841,
+                                                            "remote_id": "EVA086GQJ",
+                                                            "name": "Autoevaluaci\u00f3n",
+                                                            "mime": "text/html",
+                                                            "content": "\u00bfCu\u00e1l de las siguientes opciones describe mejor una toxi-infecci\u00f3n alimentaria?...",
+                                                            "remote_updated_at": "2024-06-07T00:00:00Z",
+                                                            "url": null
+                                                        }
+                                                    ]
+                                                }
+                                            ],
+                                            "remote_id": "UDI153DFQ",
+                                            "name": "Recursos Educativos",
+                                            "order": 2,
+                                            "remote_updated_at": "2024-06-07T00:00:00Z"
+                                        }
+                                    ],
+                                    "remote_id": "MOD024L9B",
+                                    "name": "Seguridad alimentaria en el hogar",
+                                    "ai_behaviour": "full_auto",
+                                    "description": null,
+                                    "grade_publish_delay": 36,
+                                    "enabled": true,
+                                    "language": {
+                                        "code": "es"
+                                    },
+                                    "learning_platform": {
+                                        "uuid": "673b3946783d49dd0342af1e"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    }
+                }
+            }
+        },
+        "/course/{remote_id}/student": {
+            "post": {
+                "summary": "Asignar estudiantes a un curso",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "remote_id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID Remoto del curso al que se asignar\u00e1n los estudiantes"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "students": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/components/schemas/StudentInput"
+                                        }
+                                    }
+                                }
+                            },
+                            "example": {
+                                "students": [
+                                    {
+                                        "remote_id": "113302879035395307210",
+                                        "name": "Lito",
+                                        "surname": "Ordes",
+                                        "email": "lito@hawkings.education"
+                                    },
+                                    {
+                                        "remote_id": "113302879035395307211",
+                                        "name": "Daniel",
+                                        "surname": "Seijo",
+                                        "email": "daniel@hawkings.education"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Estudiantes asignados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StudentListResponse"
+                                },
+                                "example": [
+                                    {
+                                        "id": 1,
+                                        "remote_id": "113302879035395307210",
+                                        "name": "Lito",
+                                        "surname": "Ordes",
+                                        "email": "lito@hawkings.education"
+                                    },
+                                    {
+                                        "id": 2,
+                                        "remote_id": "113302879035395307211",
+                                        "name": "Daniel",
+                                        "surname": "Seijo",
+                                        "email": "daniel@hawkings.education"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    }
+                }
+            }
+        },
+        "/course-content": {
+            "get": {
+                "summary": "Listar contenidos de curso",
+                "description": "Obtiene una lista de contenidos asociados a un curso. Se debe enviar al menos uno de los siguientes par\u00e1metros: `course_remote_id`, `course_section_remote_id` o `course_module_remote_id`. Los par\u00e1metros `contents` (boolean), `limit` (por defecto 100) y `page` son opcionales.\n",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "course_remote_id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Identificador remoto del curso (al menos uno de estos par\u00e1metros es obligatorio)"
+                    },
+                    {
+                        "in": "query",
+                        "name": "course_section_remote_id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Identificador remoto de la secci\u00f3n del curso (al menos uno de estos par\u00e1metros es obligatorio)"
+                    },
+                    {
+                        "in": "query",
+                        "name": "course_module_remote_id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Identificador remoto del m\u00f3dulo del curso (al menos uno de estos par\u00e1metros es obligatorio)"
+                    },
+                    {
+                        "in": "query",
+                        "name": "contents",
+                        "schema": {
+                            "type": "boolean"
+                        },
+                        "description": "Indica si se deben incluir los contenidos completos."
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "integer",
+                            "default": 100
+                        },
+                        "description": "N\u00famero m\u00e1ximo de registros a devolver (por defecto 100)"
+                    },
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "N\u00famero de p\u00e1gina para la paginaci\u00f3n"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de contenidos de curso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/CourseContent"
+                                            }
+                                        },
+                                        "pages": {
+                                            "type": "integer"
+                                        },
+                                        "page": {
+                                            "type": "integer"
+                                        },
+                                        "offset": {
+                                            "type": "integer"
+                                        },
+                                        "total": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "data": [
+                                        {
+                                            "id": 34464,
+                                            "name": "Autoevaluaci\u00f3n",
+                                            "type": "url",
+                                            "url": "",
+                                            "mime": "text/html",
+                                            "remote_id": "EVA085GYF",
+                                            "status": "processed",
+                                            "remote_updated_at": "2021-12-17T00:00:00Z",
+                                            "created_at": "2024-11-25T14:14:53Z",
+                                            "updated_at": "2024-11-30T01:13:05Z",
+                                            "course": {
+                                                "id": 959,
+                                                "name": "Renderizado con V-RAY para REVIT",
+                                                "remote_id": "MOD024D92"
+                                            },
+                                            "course_module": {
+                                                "id": 31479,
+                                                "name": "Autoevaluaci\u00f3n",
+                                                "order": 1,
+                                                "remote_id": "EVA085GYF"
+                                            },
+                                            "course_section": {
+                                                "id": 4733,
+                                                "name": "Introducci\u00f3n",
+                                                "order": 1,
+                                                "remote_id": "UDI15242C"
+                                            },
+                                            "file": {
+                                                "id": 84898,
+                                                "type": "file",
+                                                "mime": "text/plain",
+                                                "size": 2154,
+                                                "error": false,
+                                                "error_type": null,
+                                                "created_at": "2024-11-25T14:14:53Z",
+                                                "updated_at": "2024-11-29T19:19:44Z",
+                                                "remote_id": "EVA085GYF",
+                                                "contents": "Completa el siguiente enunciado con la opci\u00f3n correcta..."
+                                            }
+                                        }
+                                    ],
+                                    "pages": 1,
+                                    "page": 1,
+                                    "offset": 100,
+                                    "total": 44
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    }
+                }
+            }
+        },
+        "/language": {
+            "get": {
+                "summary": "Listar lenguajes",
+                "responses": {
+                    "200": {
+                        "description": "Lista de lenguajes",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Language"
+                                    }
+                                },
+                                "example": [
+                                    {
+                                        "id": 1,
+                                        "name": "English",
+                                        "code": "en",
+                                        "iso": "en_EN",
+                                        "rtl": false
+                                    },
+                                    {
+                                        "id": 2,
+                                        "name": "Spanish",
+                                        "code": "es",
+                                        "iso": "es_ES",
+                                        "rtl": false
+                                    },
+                                    {
+                                        "id": 3,
+                                        "name": "Portugu\u00eas",
+                                        "code": "pt",
+                                        "iso": "pt_BR",
+                                        "rtl": false
+                                    },
+                                    {
+                                        "id": 4,
+                                        "name": "\u6c49\u8bed",
+                                        "code": "zh",
+                                        "iso": "zh_CN",
+                                        "rtl": false
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    }
+                }
+            }
+        }
+    }
+}
