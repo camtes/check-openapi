@@ -4,7 +4,7 @@ import os
 import subprocess
 
 # API config.
-URL = "https://data-api.hawkings.education/api/swagger/swagger.json"
+URL = os.getenv("JSON_URL")
 FILE_PATH = "data.json"
 
 # Telegram config.
